@@ -2,7 +2,9 @@ package ua.darksoul.testprojects.ownchat.controller;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,24 +17,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ua.darksoul.testprojects.ownchat.domain.Message;
 import ua.darksoul.testprojects.ownchat.domain.User;
-import ua.darksoul.testprojects.ownchat.domain.dto.CaptchaResponseDto;
 import ua.darksoul.testprojects.ownchat.repos.MessageRepo;
 import ua.darksoul.testprojects.ownchat.service.FileService;
+import ua.darksoul.testprojects.ownchat.service.MessageService;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 @Controller
-public class MainController {
+public class MessageController {
     @Autowired
     private MessageRepo messageRepo;
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -40,16 +42,16 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model){
-        Iterable<Message> messages = messageRepo.findAll();
+    public String main(
+            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
+    ){
+        val page = messageService.messageList(pageable, filter);
 
-        if(filter !=null && !filter.isEmpty()) {
-            messages = messageRepo.findByTag(filter);
-        }else{
-            messages = messageRepo.findAll();
-        }
-
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
+        model.addAttribute("itemsCount", page.getSize());
         model.addAttribute("filter", filter);
 
         return "main";
@@ -61,12 +63,13 @@ public class MainController {
             @Valid Message message,
             BindingResult bindingResult,
             Model model,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("file") MultipartFile file,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws IOException {
         message.setAuthor(user);
 
         if(bindingResult.hasErrors()){
-            Map<String, String> mapErrors = UtillsController.getErrors(bindingResult);
+            val mapErrors = UtillsController.getErrors(bindingResult);
 
             model.mergeAttributes(mapErrors);
             model.addAttribute("message", message);
@@ -75,32 +78,37 @@ public class MainController {
 
             model.addAttribute("message", null);
 
-            messageRepo.save(message);
+            messageService.saveMessage(message);
         }
 
-        val messages = messageRepo.findAll();
+        val page = messageService.messageList(pageable, null);
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("url", "/main");
+        model.addAttribute("page", page);
+        model.addAttribute("itemsCount", page.getSize());
 
         return "main";
     }
 
-    @GetMapping("/user-messages/{user}")
+    @GetMapping("/user-messages/{author}")
     public String userMessages(
             @AuthenticationPrincipal User currentUser,
-            @PathVariable User user,
+            @PathVariable User author,
             Model model,
-            @RequestParam(required = false) Message message
+            @RequestParam(required = false) Message message,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
-        Set<Message> messages = user.getMessages();
+        val page = messageService.messageListForUser(pageable, author);
 
+        model.addAttribute("isCurrentUser", currentUser.equals(author));
+        model.addAttribute("userChannel", author);
+        model.addAttribute("subscriptionsCount", author.getSubscriptions().size());
+        model.addAttribute("subscribersCount", author.getSubscribers().size());
+        model.addAttribute("isSubscriber", author.getSubscribers().contains(currentUser));
+        model.addAttribute("url", "/user-messages/" + author.getId());
         model.addAttribute("message", message);
-        model.addAttribute("messages", messages);
-        model.addAttribute("isCurrentUser", currentUser.equals(user));
-        model.addAttribute("userChannel", user);
-        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
-        model.addAttribute("subscribersCount", user.getSubscribers().size());
-        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+        model.addAttribute("page", page);
+        model.addAttribute("itemsCount", page.getSize());
 
         return "userMessages";
     }
@@ -114,7 +122,7 @@ public class MainController {
             @RequestParam("tag") String tag,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        if(message.getAuthor().equals(currentUser)){
+        if(message.getAuthor().equals(currentUser) && message != null){
             if(!StringUtils.isEmpty(text)){
                 message.setText(text);
             }
@@ -125,7 +133,7 @@ public class MainController {
 
             fileService.saveFile(message,file);
 
-            messageRepo.save(message);
+            messageService.saveMessage(message);
         }
 
         return "redirect:/user-messages/" + user;
