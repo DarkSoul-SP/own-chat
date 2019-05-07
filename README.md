@@ -1,5 +1,5 @@
 # OwnChat
-Test web java-project for upp skills in working with JPA and <strong>Spring</strong>>.
+Test web java-project for upp skills in working with JPA and <strong>Spring</strong>.
 
 **Client-side** — Working with <b>Bootstrap</b>  and <b>FreeMarker</b>  as templating engine. 
 
