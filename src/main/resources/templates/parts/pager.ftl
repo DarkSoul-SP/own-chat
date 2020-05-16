@@ -15,7 +15,7 @@
         <#assign body = 1..page.getTotalPages()>
     </#if>
 
-    <#if page.getTotalPages() gt 3>
+    <#if page.getTotalPages() gt 1>
         <div class="mt-3">
             <ul class="pagination justify-content-center">
                 <li class="page-item disabled">
