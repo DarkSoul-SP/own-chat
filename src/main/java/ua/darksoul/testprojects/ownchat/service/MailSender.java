@@ -22,6 +22,7 @@ public class MailSender {
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
 
-        mailSender.send(mailMessage);
+//        TODO fix bug mail sender
+//        mailSender.send(mailMessage);
     }
 }
