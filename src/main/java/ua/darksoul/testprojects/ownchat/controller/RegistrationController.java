@@ -15,6 +15,7 @@ import ua.darksoul.testprojects.ownchat.domain.dto.CaptchaResponseDto;
 import ua.darksoul.testprojects.ownchat.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(
-            @RequestParam("g-recaptcha-response") String captchaResponse,
+            @RequestParam(value = "g-recaptcha-response", defaultValue = "notPresent") String captchaResponse,
             @Valid User user,
             BindingResult bindingResult,
             Model model

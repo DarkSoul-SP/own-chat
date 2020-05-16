@@ -1,3 +1,38 @@
-body{
-    color: #113;
+body {
+    color: #fff !important;;
+    background: #000 url(images/backArt.jpg) fixed;
+    background-size: 100%;
+}
+
+a, a:hover {
+    text-decoration:none !important;
+}
+
+.turbolinks-progress-bar {
+     height: 2px;
+     background-color: lawngreen;
+}
+
+.navbar-light .navbar-brand {
+    color: lawngreen !important;
+}
+
+.navbar-light .navbar-text {
+    color: lightyellow !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.container .mt-4 {
+    color: white !important;
+}
+
+.m-2 {
+    color: black !important;
+}
+
+nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: dimgrey !important;
 }

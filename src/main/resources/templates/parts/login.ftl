@@ -21,7 +21,8 @@
                     ${passwordError}
                 </div>
             </#if>
-            <small id="passwordHelp" class="form-text text-muted">We'll never share your password with anyone else.
+            <small id="passwordHelp" class="form-text text-muted">
+                We'll never share your password with anyone else.
             </small>
         </div>
         <#if isRegisterForm>
@@ -65,8 +66,9 @@
 </#macro>
 
 <#macro logout>
+    <#include "security.ftl">
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <button type="submit" class="btn btn-primary">Sign Out</button>
+        <button type="submit" class="btn btn-primary"><#if user??>Sign Out<#else>Log In</#if></button>
     </form>
 </#macro>
