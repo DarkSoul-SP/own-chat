@@ -1,10 +1,10 @@
-# OwnChat
-Test web java-project for upp skills in working with JPA and <strong>Spring</strong>.
+# OwnChat - it is my first pet project for practice with <strong>Spring</strong>.  
+Functionally this is a twitter-like system. 
 
-**Client-side** — Working with <b>Bootstrap</b>  and <b>FreeMarker</b>  as templating engine. 
+**Client-side** — <b>Bootstrap</b>  and <b>FreeMarker</b> as templating engine. 
 
-**Server-side** — <b>Spring (Boot, Data, MVC, Security, Test)</b> .
+**Server-side** — <b>Spring Boot + MVC, Data(JPA), Security, Test</b>.
 
-JPA(<b>Hibernate</b>) for working with DB (<b>MySQL</b>). 
+Was used JPA(<b>Hibernate</b>) for working with DB (<b>MySQL</b>). 
 
-<b>Maven</b> as dependency loader and for packaging.
+<b>Maven</b> as build automation system.
