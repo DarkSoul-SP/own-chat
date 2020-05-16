@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.darksoul.testprojects.ownchat.domain.Role;
 import ua.darksoul.testprojects.ownchat.domain.User;
-import ua.darksoul.testprojects.ownchat.repos.UserRepo;
+import ua.darksoul.testprojects.ownchat.repo.UserRepo;
 
 import java.util.Collections;
 

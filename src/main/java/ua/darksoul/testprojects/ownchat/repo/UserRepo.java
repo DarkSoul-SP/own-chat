@@ -1,4 +1,4 @@
-package ua.darksoul.testprojects.ownchat.repos;
+package ua.darksoul.testprojects.ownchat.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ua.darksoul.testprojects.ownchat.domain.User;

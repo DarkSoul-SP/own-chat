@@ -15,11 +15,12 @@
         <#assign body = 1..page.getTotalPages()>
     </#if>
 
-    <div class="mt-3">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Pages</a>
-            </li>
+    <#if page.getTotalPages() gt 1>
+        <div class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Pages</a>
+                </li>
             <#list body as p>
                 <#if (p - 1) == page.getNumber()>
                     <li class="page-item active">
@@ -35,8 +36,9 @@
                     </li>
                 </#if>
             </#list>
-        </ul>
-    </div>
+            </ul>
+        </div>
+    </#if>
 </#macro>
 
 <#macro itemsOnPage url page>

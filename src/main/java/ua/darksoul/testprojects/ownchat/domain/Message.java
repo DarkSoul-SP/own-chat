@@ -5,9 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import ua.darksoul.testprojects.ownchat.domain.util.MessageHelper;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,7 +18,7 @@ import javax.validation.constraints.NotBlank;
 @RequiredArgsConstructor
 public class Message {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Please fill the message")
@@ -33,7 +36,15 @@ public class Message {
 
     private String filename;
 
+    @ManyToMany
+    @JoinTable(
+            name = "message_likes",
+            joinColumns = { @JoinColumn( name = "message_id") },
+            inverseJoinColumns = { @JoinColumn( name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
+
     public String getAuthorName(){
-        return author != null ? author.getUsername() : "<none>";
+        return MessageHelper.getAuthorName(author);
     }
 }

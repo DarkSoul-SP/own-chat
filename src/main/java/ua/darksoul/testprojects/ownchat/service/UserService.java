@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ua.darksoul.testprojects.ownchat.domain.Role;
 import ua.darksoul.testprojects.ownchat.domain.User;
-import ua.darksoul.testprojects.ownchat.repos.UserRepo;
+import ua.darksoul.testprojects.ownchat.repo.UserRepo;
 
 import java.util.*;
 import java.util.stream.Collectors;
