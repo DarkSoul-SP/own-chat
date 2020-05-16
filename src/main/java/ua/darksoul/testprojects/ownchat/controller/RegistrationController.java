@@ -45,17 +45,20 @@ public class RegistrationController {
             Model model
     ){
         String url = String.format(CAPTCHA_URL, recaptchaSecret, captchaResponse);
-        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+
+        //TODO fix bug with recaptcha and mail sender
+        /*CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
         if(!response.isSuccess()){
             model.addAttribute("captchaError", "Fill captcha");
-        }
+        }*/
 
         if(user.getPassword() != null && !user.getPassword().equals(user.getConfirmPassword())){
             model.addAttribute("passwordError", "Password are different.");
         }
 
-        if(bindingResult.hasErrors() || !response.isSuccess()){
+//        if(bindingResult.hasErrors() || !response.isSuccess()){
+        if(bindingResult.hasErrors()){
             Map<String, String> errors = UtillsController.getErrors(bindingResult);
 
             model.mergeAttributes(errors);
