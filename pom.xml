@@ -14,6 +14,10 @@
         <version>2.0.5.RELEASE</version>
     </parent>
 
+    <properties>
+        <java.version>1.10</java.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,6 +42,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
 
         <!-- Security -->
         <dependency>
@@ -52,11 +65,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
         </dependency>
 
         <dependency>
@@ -94,12 +102,6 @@
             <version>2.3.0</version>
         </dependency>
     </dependencies>
-
-
-    <properties>
-        <java.version>1.10</java.version>
-    </properties>
-
 
     <build>
         <plugins>
