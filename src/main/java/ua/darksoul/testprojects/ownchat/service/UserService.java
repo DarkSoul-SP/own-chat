@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${hostname}")
+    @Value("${hostname:localhost:8080}")
     private String hostname;
 
     @Override

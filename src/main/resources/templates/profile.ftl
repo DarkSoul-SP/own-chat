@@ -6,7 +6,7 @@
     <form method="post">
         <div class="form-group col-md-6">
             <label> Password </label>
-            <input type="password" name="password" class="form-control" aria-describedby="passwordHelp" placeholder="Enter password"/>
+            <input type="password" name="password" class="form-control" aria-describedby="passwordHelp" placeholder="Enter new password"/>
             <small id="passwordHelp" class="form-text text-muted">We'll never share your password with anyone else.</small>
         </div>
         <div class="form-group col-md-6">
