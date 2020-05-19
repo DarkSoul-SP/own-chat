@@ -62,6 +62,7 @@ public class MessageController {
             @Valid Message message,
             BindingResult bindingResult,
             Model model,
+            @RequestParam(required = false, defaultValue = "") String filter,
             @RequestParam("file") MultipartFile file,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws IOException {
@@ -74,15 +75,13 @@ public class MessageController {
             model.addAttribute("message", message);
         } else {
             fileService.saveFile(message, file);
-
             messageService.saveMessage(message);
 
             model.addAttribute("message", null);
         }
 
-        val page = messageService.messageList(pageable, null, user);
+        val page = messageService.messageList(pageable, filter, user);
 
-        model.addAttribute("url", "/main");
         model.addAttribute("page", page);
         model.addAttribute("itemsCount", page.getSize());
 
