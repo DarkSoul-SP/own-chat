@@ -36,3 +36,7 @@ a, a:hover {
 nav.navbar.navbar-expand-lg.navbar-light.bg-light {
     background-color: dimgrey !important;
 }
+
+.btn-dark {
+    background-color: dimgray !important;
+}

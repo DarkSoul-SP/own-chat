@@ -74,7 +74,7 @@ public class MessageController {
             model.mergeAttributes(mapErrors);
             model.addAttribute("message", message);
         } else {
-            fileService.saveFile(message, file);
+            fileService.saveImg(message, file);
             messageService.saveMessage(message);
 
             model.addAttribute("message", null);
@@ -129,12 +129,35 @@ public class MessageController {
                 message.setTag(tag);
             }
 
-            fileService.saveFile(message,file);
+            fileService.deleteFile(message.getFilename());
+            fileService.saveImg(message, file);
 
             messageService.saveMessage(message);
         }
 
         return "redirect:/user-messages/" + user;
+    }
+
+    @GetMapping("/delete-message/{author}/{message}")
+    public String deleteMessage(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User author,
+            @PathVariable Message message,
+            RedirectAttributes redirectAttributes,
+            @RequestHeader(required = false) String referer
+    ) {
+        if((author.equals(currentUser) || currentUser.isAdmin()) && message != null){
+            fileService.deleteFile(message.getFilename());
+            messageService.deleteMessage(message);
+        }
+
+        UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
+
+        components.getQueryParams()
+                .entrySet()
+                .forEach(pair -> redirectAttributes.addAttribute(pair.getKey(), pair.getValue()));
+
+        return "redirect:/main";
     }
 
     @GetMapping("/messages/{message}/like")

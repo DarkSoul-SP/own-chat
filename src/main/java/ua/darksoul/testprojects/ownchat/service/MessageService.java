@@ -29,4 +29,8 @@ public class MessageService {
     public void saveMessage(Message message) {
         messageRepo.save(message);
     }
+
+    public void deleteMessage(Message message) {
+        messageRepo.delete(message);
+    }
 }

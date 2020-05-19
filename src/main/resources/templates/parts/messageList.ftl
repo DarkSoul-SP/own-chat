@@ -29,6 +29,11 @@
                         Edit
                     </a>
                 </#if>
+                <#if message.author.id == currentUserId || isAdmin>
+                    <a class="btn btn-danger" style="margin-left: 10px" href="/delete-message/${message.author.id}/${message.id}">
+                        Delete
+                    </a>
+                </#if>
             </div>
         </div>
     </div>
