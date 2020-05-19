@@ -1,7 +1,6 @@
 body {
     color: #fff !important;;
-    background: #000 url(images/backArt.jpg) fixed;
-    background-size: 100%;
+    background: #000 url(/static/images/backgroundArt.jpg) fixed;
 }
 
 a, a:hover {
@@ -35,8 +34,4 @@ a, a:hover {
 
 nav.navbar.navbar-expand-lg.navbar-light.bg-light {
     background-color: dimgrey !important;
-}
-
-.btn-dark {
-    background-color: dimgray !important;
 }

@@ -44,10 +44,10 @@ public class RegistrationController {
             BindingResult bindingResult,
             Model model
     ){
-        String url = String.format(CAPTCHA_URL, recaptchaSecret, captchaResponse);
-
         //TODO fix bug with recaptcha and mail sender
-        /*CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+        /*String url = String.format(CAPTCHA_URL, recaptchaSecret, captchaResponse);
+
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
         if(!response.isSuccess()){
             model.addAttribute("captchaError", "Fill captcha");

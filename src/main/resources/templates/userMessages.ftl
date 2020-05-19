@@ -4,9 +4,9 @@
 <h3>${userChannel.username}</h3>
 <#if !isCurrentUser>
     <#if isSubscriber>
-        <a class="btn btn-dark" href="/user/unsubscribe/${userChannel.id}">Unsubscribe</a>
+        <a class="btn btn-dark" style="background-color: dimgray" href="/user/unsubscribe/${userChannel.id}">Unsubscribe</a>
     <#else>
-        <a class="btn btn-dark" href="/user/subscribe/${userChannel.id}">Subscribe</a>
+        <a class="btn btn-dark" style="background-color: dodgerblue" href="/user/subscribe/${userChannel.id}">Subscribe</a>
     </#if>
 </#if>
 <div class="container my-3">

@@ -35,7 +35,7 @@ public class MessageController {
     private MessageService messageService;
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
+    public String greeting() {
         return "greeting";
     }
 
@@ -66,19 +66,7 @@ public class MessageController {
             @RequestParam("file") MultipartFile file,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws IOException {
-        message.setAuthor(user);
-
-        if(bindingResult.hasErrors()){
-            val mapErrors = UtillsController.getErrors(bindingResult);
-
-            model.mergeAttributes(mapErrors);
-            model.addAttribute("message", message);
-        } else {
-            fileService.saveImg(message, file);
-            messageService.saveMessage(message);
-
-            model.addAttribute("message", null);
-        }
+        messageService.createMessage(user, message, bindingResult, model, file);
 
         val page = messageService.messageList(pageable, filter, user);
 
@@ -115,24 +103,27 @@ public class MessageController {
     public String updateMessage(
             @AuthenticationPrincipal User currentUser,
             @PathVariable Long user,
-            @RequestParam("id") Message message,
-            @RequestParam("text") String text,
-            @RequestParam("tag") String tag,
+            @RequestParam("id") Message messageFromDb,
+            @Valid Message message,
+            BindingResult bindingResult,
+            Model model,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        if(message.getAuthor().equals(currentUser) && message != null){
-            if(!StringUtils.isEmpty(text)){
-                message.setText(text);
+        if(messageFromDb != null && messageFromDb.getAuthor().equals(currentUser)){
+            if(!StringUtils.isEmpty(message.getText())){
+                messageFromDb.setText(message.getText());
             }
 
-            if(!StringUtils.isEmpty(tag)){
-                message.setTag(tag);
+            if(!StringUtils.isEmpty(message.getTag())){
+                messageFromDb.setTag(message.getTag());
             }
 
-            fileService.deleteFile(message.getFilename());
-            fileService.saveImg(message, file);
+            fileService.deleteFile(messageFromDb.getFilename());
+            fileService.saveImg(messageFromDb, file);
 
-            messageService.saveMessage(message);
+            messageService.saveMessage(messageFromDb);
+        } else {
+            messageService.createMessage(currentUser, message, bindingResult, model, file);
         }
 
         return "redirect:/user-messages/" + user;
