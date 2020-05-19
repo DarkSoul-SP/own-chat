@@ -1,7 +1,7 @@
 <#include "security.ftl">
 <#import "pager.ftl" as p>
 
-<@p.itemsOnPage url page/>
+<@p.itemsOnPage page url/>
 
 <div class="card-columns" id="message-list">
 <#list page.content as message>
@@ -38,6 +38,6 @@ No message.
 </div>
 
 <#if itemsCount gt 5>
-    <@p.itemsOnPage url page/>
+    <@p.itemsOnPage page url/>
 </#if>
-<@p.pager url page/>
+<@p.pager page url/>

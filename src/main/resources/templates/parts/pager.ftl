@@ -1,4 +1,4 @@
-<#macro pager url page>
+<#macro pager page url="">
     <#if page.getTotalPages() gt 7>
         <#assign
         totalPages = page.getTotalPages()
@@ -41,7 +41,7 @@
     </#if>
 </#macro>
 
-<#macro itemsOnPage url page>
+<#macro itemsOnPage page url="">
     <div class="mt-3">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
