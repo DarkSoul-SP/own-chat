@@ -5,6 +5,7 @@
 .idea
 target/
 out/
+uploads/
 
 # Log file
 *.log
