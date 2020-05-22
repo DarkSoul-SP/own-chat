@@ -1,6 +1,7 @@
 package ua.darksoul.testprojects.ownchat.domain;
 
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @NoArgsConstructor
+@ToString(of = {"id", "username"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

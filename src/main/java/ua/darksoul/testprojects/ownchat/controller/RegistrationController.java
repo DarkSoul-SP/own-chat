@@ -1,5 +1,6 @@
 package ua.darksoul.testprojects.ownchat.controller;
 
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,12 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import ua.darksoul.testprojects.ownchat.domain.User;
-import ua.darksoul.testprojects.ownchat.domain.dto.CaptchaResponseDto;
 import ua.darksoul.testprojects.ownchat.service.UserService;
+import ua.darksoul.testprojects.ownchat.util.ExceptionUtil;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
@@ -60,7 +60,7 @@ public class RegistrationController {
 
 //        if(bindingResult.hasErrors() || !response.isSuccess()){
         if(bindingResult.hasErrors()){
-            Map<String, String> errors = UtillsController.getErrors(bindingResult);
+            Map<String, String> errors = ExceptionUtil.getErrors(bindingResult);
 
             model.mergeAttributes(errors);
 
@@ -77,7 +77,7 @@ public class RegistrationController {
         model.addAttribute("messageType", "success");
         model.addAttribute("message", explanatoryMessage);
 
-//        return "redirect:/login";
+        Sentry.capture("New user was created: " + user);
         return "login";
     }
 

@@ -9,18 +9,18 @@
                 <input type="text" class="form-control ${(textError??)?string('is-invalid', '')}"
                        value="<#if message??>${message.text}</#if>" name="text" placeholder="Enter your message"/>
                 <#if textError??>
-                <div class="invalid-feedback">
-                    ${textError}
-                </div>
+                    <div class="invalid-feedback">
+                        ${textError}
+                    </div>
                 </#if>
             </div>
             <div class="form-group">
                 <input type="text" class="form-control ${(tagError??)?string('is-invalid', '')}"
                        value="<#if message??>${message.tag}</#if>" name="tag" placeholder="Tag"/>
                 <#if tagError??>
-                <div class="invalid-feedback">
-                    ${tagError}
-                </div>
+                    <div class="invalid-feedback">
+                        ${tagError}
+                    </div>
                 </#if>
             </div>
             <div class="form-group">

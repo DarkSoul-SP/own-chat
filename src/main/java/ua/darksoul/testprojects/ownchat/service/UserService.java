@@ -141,7 +141,7 @@ public class UserService implements UserDetailsService {
                 user.setUsername(username);
             } else {
                 model.addAttribute("messageType", "danger");
-                model.addAttribute("message", "User with this username is already exists.");
+                model.addAttribute("message", "User with this username already exists.");
             }
         }
 

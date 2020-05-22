@@ -22,7 +22,6 @@ import ua.darksoul.testprojects.ownchat.service.MessageService;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
 
 @Controller

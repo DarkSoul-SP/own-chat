@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-import ua.darksoul.testprojects.ownchat.controller.UtillsController;
 import ua.darksoul.testprojects.ownchat.domain.Message;
 import ua.darksoul.testprojects.ownchat.domain.User;
 import ua.darksoul.testprojects.ownchat.domain.dto.MessageDto;
 import ua.darksoul.testprojects.ownchat.repo.MessageRepo;
+import ua.darksoul.testprojects.ownchat.util.ExceptionUtil;
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public class MessageService {
         message.setAuthor(user);
 
         if(bindingResult.hasErrors()){
-            val mapErrors = UtillsController.getErrors(bindingResult);
+            val mapErrors = ExceptionUtil.getErrors(bindingResult);
 
             model.mergeAttributes(mapErrors);
             model.addAttribute("message", message);
