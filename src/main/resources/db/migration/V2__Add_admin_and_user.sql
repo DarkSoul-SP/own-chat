@@ -15,10 +15,11 @@
 
 -- Pg
 insert into usr (id, username, password, active, email)
-    values (1, 'admin', 'qwerty123', true, 'dsoul2981@gmail.com');
+    values (1, 'admin', 'qwerty123', true, 'dsoul2981@gmail.com'),
+           (2, 'user', '1234', true, 'example@gmail.com');
 
 insert into user_role (user_id, roles)
-    values (1, 'USER'), (1, 'ADMIN');
+    values (1, 'USER'), (1, 'ADMIN'), (2, 'USER');
 
 create extension if not exists pgcrypto;
 
