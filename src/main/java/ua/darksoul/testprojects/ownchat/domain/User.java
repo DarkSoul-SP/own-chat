@@ -1,6 +1,7 @@
 package ua.darksoul.testprojects.ownchat.domain;
 
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,8 +21,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank(message = "Username cannot be empty")
+    @Length(min = 3, message = "Username too short (less than 3 symbol)")
     private String username;
     @NotBlank(message = "Password cannot be empty")
+    @Length(min = 3, message = "Password too short (less than 3 symbol)")
     private String password;
     @Transient
     private String confirmPassword;

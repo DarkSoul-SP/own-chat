@@ -6,6 +6,7 @@
 target/
 out/
 uploads/
+diff_keys.properties
 
 # Log file
 *.log

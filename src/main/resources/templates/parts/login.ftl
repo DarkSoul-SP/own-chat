@@ -26,36 +26,36 @@
             </small>
         </div>
         <#if isRegisterForm>
-        <div class="form-group col-md-6">
-            <label> Confirm password </label>
-            <input type="password" name="confirmPassword"
-                   class="form-control ${(confirmPasswordError??)?string('is-invalid', '')}"
-                   placeholder="Retype password"/>
-            <#if confirmPasswordError??>
-                <div class="invalid-feedback">
-                    ${confirmPasswordError}
-                </div>
-            </#if>
-        </div>
-        <div class="form-group col-md-6">
-            <label> Email </label>
-            <input type="email" name="email" value="<#if user??>${user.email}</#if>"
-                   class="form-control ${(emailError??)?string('is-invalid', '')}"
-                   placeholder="example@ua.com"/>
-            <#if emailError??>
-                <div class="invalid-feedback">
-                    ${emailError}
-                </div>
-            </#if>
-        </div>
-        <div class="form-group col-sm-6">
-            <div class="g-recaptcha" data-sitekey="6Leut5wUAAAAACXNnW7QWAA_f-m5H2z9bmtK2wfR"></div>
-            <#if captchaError??>
-                <div class="alert alert-danger col-md-14" role="alert">
-                    ${captchaError}
-                </div>
-            </#if>
-        </div>
+            <div class="form-group col-md-6">
+                <label> Confirm password </label>
+                <input type="password" name="confirmPassword"
+                       class="form-control ${(confirmPasswordError??)?string('is-invalid', '')}"
+                       placeholder="Retype password"/>
+                <#if confirmPasswordError??>
+                    <div class="invalid-feedback">
+                        ${confirmPasswordError}
+                    </div>
+                </#if>
+            </div>
+            <div class="form-group col-md-6">
+                <label> Email </label>
+                <input type="email" name="email" value="<#if user??>${user.email}</#if>"
+                       class="form-control ${(emailError??)?string('is-invalid', '')}"
+                       placeholder="example@ua.com"/>
+                <#if emailError??>
+                    <div class="invalid-feedback">
+                        ${emailError}
+                    </div>
+                </#if>
+            </div>
+            <div class="form-group col-sm-6">
+                <div class="g-recaptcha" data-sitekey="6Leut5wUAAAAACXNnW7QWAA_f-m5H2z9bmtK2wfR"></div>
+                <#if captchaError??>
+                    <div class="alert alert-danger col-md-14" role="alert">
+                        ${captchaError}
+                    </div>
+                </#if>
+            </div>
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <#if !isRegisterForm>

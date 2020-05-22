@@ -44,7 +44,7 @@ public class RegistrationController {
             BindingResult bindingResult,
             Model model
     ){
-        //TODO fix bug with recaptcha and mail sender
+        //TODO fix bug with recaptcha
         /*String url = String.format(CAPTCHA_URL, recaptchaSecret, captchaResponse);
 
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
@@ -55,6 +55,7 @@ public class RegistrationController {
 
         if(user.getPassword() != null && !user.getPassword().equals(user.getConfirmPassword())){
             model.addAttribute("passwordError", "Password are different.");
+            return "registration";
         }
 
 //        if(bindingResult.hasErrors() || !response.isSuccess()){
@@ -67,11 +68,17 @@ public class RegistrationController {
         }
 
         if(!userService.addUser(user)){
-            model.addAttribute("usernameError", "User exists!");
+            model.addAttribute("usernameError", "User with this username already exists.");
             return "registration";
         }
 
-        return "redirect:/login";
+        String explanatoryMessage = String.format("Welcome, %s. Letter with activation code was sent on your email. \n" +
+                "Check this to complete the registration.", user.getUsername());
+        model.addAttribute("messageType", "success");
+        model.addAttribute("message", explanatoryMessage);
+
+//        return "redirect:/login";
+        return "login";
     }
 
     @GetMapping("/activate/{code}")

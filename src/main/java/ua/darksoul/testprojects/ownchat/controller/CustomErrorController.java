@@ -17,22 +17,29 @@ public class CustomErrorController implements ErrorController {
     @ResponseBody
     public String handleError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+        Exception exceptionFromServlet = (Exception) request.getAttribute("javax.servlet.error.exception");
+        Exception exceptionFromSpringDS = (Exception) request.getAttribute("org.springframework.web.servlet.DispatcherServlet.EXCEPTION");
 
         return String.format(
-                    "<html>"
-                      + "<body style=\"background: url(/static/images/errorArt.jpg) fixed; color: white; font-size: 20px\">"
-                        + " <h2>You have opened unexpected page. <br> Press the button for redirect to main page.</h2> "
-                        + " <div style=\" background-color: dimgray; border-radius: 10px; border-color: #007bff; "
-                          + " height: 25px; width: 90px; padding: 20px; margin-left: 10px\"> "
-                          + " <a style=\"text-decoration:none; color: white; height: 25px; width: 90px\" href=\"/main\"> "
-                          + " Click here</a> "
-                        + " </div> <br> "
+                "<html>"
+                        + "<body style=\"background: url(/static/images/errorArt.jpg) fixed; color: white; font-size: 20px\">"
+                        + " <h2>Was opened unexpected page. <br> See details below.</h2> "
                         + " <div>Status code: <b>%s</b></div> "
                         + " <div>Exception Message: <b>%s</b></div> "
-                      + "</body>"
-                    + "</html>",
-                statusCode, exception == null ? "N/A" : exception.getMessage());
+                        + " <h2>Press the button for redirect to main page.</h2> <br>"
+                        + " <div style=\" background-color: dimgray; border-radius: 10px; border-color: #007bff; "
+                        + "     height: 25px; width: 90px; padding: 20px; margin-left: 10px\"> "
+                        + "     <a style=\"text-decoration:none; color: white; height: 25px; width: 90px\" href=\"/main\"> "
+                        + "     Click here</a> "
+                        + " </div>"
+                        + "</body>"
+                        + "</html>",
+                statusCode,
+                exceptionFromServlet == null ?
+                        exceptionFromSpringDS == null ? "N/A"
+                        : exceptionFromSpringDS.getMessage()
+                :   exceptionFromServlet.getMessage()
+        );
     }
 
     @Override

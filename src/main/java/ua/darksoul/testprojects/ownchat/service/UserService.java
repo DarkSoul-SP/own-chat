@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ua.darksoul.testprojects.ownchat.domain.Role;
 import ua.darksoul.testprojects.ownchat.domain.User;
+import ua.darksoul.testprojects.ownchat.exception.MailSendingException;
 import ua.darksoul.testprojects.ownchat.repo.UserRepo;
 
 import java.util.*;
@@ -47,30 +48,33 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setActive(true);
+        user.setActive(false);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepo.save(user);
-
         sendMessageWithAC(user);
+
+        userRepo.save(user);
 
         return true;
     }
 
-    private void sendMessageWithAC(User user) {
+    private void sendMessageWithAC(User user) throws MailSendingException{
         if(!StringUtils.isEmpty(user.getEmail())){
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to OwnChat. Please visit next link: http://%s/activate/%s",
+                            "Welcome to OwnChat. Please visit next link to activate your account: http://%s/activate/%s",
                     user.getUsername(),
                     hostname,
                     user.getActivationCode()
             );
 
-            mailSender.send(user.getEmail(),"Activation code", message);
+            mailSender.send(user.getEmail(),"OwnChat activation code", message);
+            return;
         }
+
+        throw new MailSendingException("Your email is incorrect or empty.");
     }
 
     public boolean activateUser(String code) {
@@ -81,6 +85,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setActivationCode(null);
+        user.setActive(true);
         userRepo.save(user);
 
         return true;
