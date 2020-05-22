@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import ua.darksoul.testprojects.ownchat.domain.Role;
 import ua.darksoul.testprojects.ownchat.domain.User;
 import ua.darksoul.testprojects.ownchat.service.UserService;
@@ -58,12 +59,20 @@ public class UserController {
     @PostMapping("profile")
     public String updateProfile(
             @AuthenticationPrincipal User user,
+            @RequestParam String username,
             @RequestParam String password,
-            @RequestParam String email
+            @RequestParam String email,
+            Model model
     ){
-        userService.updateProfile(user, password, email);
+        userService.updateProfile(model, user, username, password, email);
+        if(!model.containsAttribute("message")) {
+            model.addAttribute("messageType", "success");
+            model.addAttribute("message", "User successfully updated.");
+        }
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
 
-        return "redirect:/user/profile";
+        return "profile";
     }
 
     @GetMapping("subscribe/{user}")

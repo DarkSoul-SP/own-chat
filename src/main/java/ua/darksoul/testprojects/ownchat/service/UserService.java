@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import ua.darksoul.testprojects.ownchat.domain.Role;
 import ua.darksoul.testprojects.ownchat.domain.User;
@@ -110,20 +111,37 @@ public class UserService implements UserDetailsService {
             }
         }
 
+        if(form.containsKey("isActive") && "on".equals(form.get("isActive"))) {
+            user.setActive(true);
+            user.setActivationCode(null);
+        } else {
+            user.setActive(false);
+            user.setActivationCode(UUID.randomUUID().toString());
+        }
+
         userRepo.save(user);
     }
 
-    public void updateProfile(User user, String password, String email) {
+    public void updateProfile(Model model, User user, String username, String password, String email) {
         String userEmail = user.getEmail();
 
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
                 (userEmail != null && !userEmail.equals(email));
 
-        if(isEmailChanged){
+        if(isEmailChanged && !StringUtils.isEmpty(email)){
             user.setEmail(email);
+            user.setActivationCode(UUID.randomUUID().toString());
+            sendMessageWithAC(user);
+        }
 
-            if(!StringUtils.isEmpty(email)){
-                user.setActivationCode(UUID.randomUUID().toString());
+        if(!StringUtils.isEmpty(username)){
+            User userFromDB = userRepo.findByUsername(username);
+
+            if(userFromDB == null){
+                user.setUsername(username);
+            } else {
+                model.addAttribute("messageType", "danger");
+                model.addAttribute("message", "User with this username is already exists.");
             }
         }
 
@@ -132,10 +150,6 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
-
-        if(isEmailChanged) {
-            sendMessageWithAC(user);
-        }
     }
 
     public void subscribe(User currentUser, User user) {

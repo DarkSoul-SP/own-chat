@@ -1,9 +1,17 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    <h5>${username}</h5>
-    ${message?ifExists}
+    <h3>${username}</h3>
+    <#if message??>
+        <div class="alert alert-${messageType} col-md-6" role="alert">
+            ${message}
+        </div>
+    </#if>
     <form method="post">
+        <div class="form-group col-md-6">
+            <label> Username </label>
+            <input type="text" name="username" class="form-control" placeholder="Enter new username"/>
+        </div>
         <div class="form-group col-md-6">
             <label> Password </label>
             <input type="password" name="password" class="form-control" aria-describedby="passwordHelp" placeholder="Enter new password"/>

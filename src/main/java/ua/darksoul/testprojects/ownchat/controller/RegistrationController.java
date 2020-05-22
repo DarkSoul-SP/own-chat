@@ -90,7 +90,7 @@ public class RegistrationController {
             model.addAttribute("message", "User successfully activated.");
         }else{
             model.addAttribute("messageType", "danger");
-            model.addAttribute("message", "Activation code is not found.");
+            model.addAttribute("message", "Activation code is not found. \n Maybe your account have already activated.");
         }
 
         return "login";
