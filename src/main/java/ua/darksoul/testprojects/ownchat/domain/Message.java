@@ -36,6 +36,9 @@ public class Message {
 
     private String filename;
 
+//    @Lob
+//    private byte[] file;
+
     @ManyToMany
     @JoinTable(
             name = "message_likes",

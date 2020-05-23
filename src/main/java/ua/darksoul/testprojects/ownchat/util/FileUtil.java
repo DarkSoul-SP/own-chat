@@ -12,15 +12,21 @@ import java.util.UUID;
 abstract public class FileUtil {
     public static String saveFile(MultipartFile file, String uploadPath) throws IOException {
         File uploadDir = new File(uploadPath);
+        String resultFileName = null;
 
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            if(uploadDir.mkdir()) {
+                String uuidFile = UUID.randomUUID().toString();
+                resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFileName));
+            }
+        } else {
+            String uuidFile = UUID.randomUUID().toString();
+            resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFileName));
         }
-
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFileName = uuidFile + "." + file.getOriginalFilename();
-
-        file.transferTo(new File(uploadPath + "/" + resultFileName));
 
         return resultFileName;
     }

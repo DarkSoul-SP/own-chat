@@ -63,12 +63,18 @@ public class UserController {
             @RequestParam String email,
             Model model
     ){
-        userService.updateProfile(model, user, username, password, email);
+        if(!"user".equals(user.getUsername())) {
+            userService.updateProfile(model, user, username, password, email);
+        } else {
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("message", "Sorry, but you can't change root user settings.");
+        }
 
         if(!model.containsAttribute("message")) {
             model.addAttribute("messageType", "success");
             model.addAttribute("message", "User successfully updated.");
         }
+
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
 

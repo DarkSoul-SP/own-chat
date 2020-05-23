@@ -30,7 +30,7 @@ public class CustomErrorController implements ErrorController {
                         + " <div style=\" background-color: dimgray; border-radius: 10px; border-color: #007bff; "
                         + "     height: 25px; width: 90px; padding: 20px; margin-left: 10px\"> "
                         + "     <a style=\"text-decoration:none; color: white; height: 25px; width: 90px\" href=\"/main\"> "
-                        + "     Click here</a> "
+                        + "     Main page</a> "
                         + " </div>"
                         + "</body>"
                         + "</html>",

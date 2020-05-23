@@ -26,8 +26,12 @@ public class FileService {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             Matcher matcher = IMG_REGEX.matcher(file.getOriginalFilename());
 
-            if(matcher.find()) {
-                message.setFilename(FileUtil.saveFile(file, uploadPath));
+            if (matcher.find()) {
+                String filename = FileUtil.saveFile(file, uploadPath);
+                if (filename != null) {
+                    message.setFilename(filename);
+//                    message.setFile(file.getBytes());
+                }
             }
         }
     }
