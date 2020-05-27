@@ -25,6 +25,7 @@ public class Message {
     @Length(max = 2048, message = "Message too long (more than 2kB)")
     @NonNull
     private String text;
+    @NotBlank(message = "Please fill the tag")
     @Length(max = 255, message = "Tag too long (more than 255)")
     @NonNull
     private String tag;

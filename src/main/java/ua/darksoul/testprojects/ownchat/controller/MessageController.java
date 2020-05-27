@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,9 @@ import ua.darksoul.testprojects.ownchat.domain.Message;
 import ua.darksoul.testprojects.ownchat.domain.User;
 import ua.darksoul.testprojects.ownchat.service.FileService;
 import ua.darksoul.testprojects.ownchat.service.MessageService;
+import ua.darksoul.testprojects.ownchat.util.ExceptionUtil;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Set;
@@ -62,7 +65,7 @@ public class MessageController {
             BindingResult bindingResult,
             Model model,
             @RequestParam(required = false, defaultValue = "") String filter,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws IOException {
         messageService.createMessage(user, message, bindingResult, model, file);
@@ -106,26 +109,15 @@ public class MessageController {
             @Valid Message message,
             BindingResult bindingResult,
             Model model,
-            @RequestParam("file") MultipartFile file
+            @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
         if(messageFromDb != null && messageFromDb.getAuthor().equals(currentUser)){
-            if(!StringUtils.isEmpty(message.getText())){
-                messageFromDb.setText(message.getText());
-            }
-
-            if(!StringUtils.isEmpty(message.getTag())){
-                messageFromDb.setTag(message.getTag());
-            }
-
-            fileService.deleteFile(messageFromDb.getFilename());
-            fileService.saveImg(messageFromDb, file);
-
-            messageService.saveMessage(messageFromDb);
+            messageService.updateMessage(messageFromDb, message, bindingResult, model, file);
+            return "redirect:/main";
         } else {
             messageService.createMessage(currentUser, message, bindingResult, model, file);
+            return "redirect:/user-messages/" + user;
         }
-
-        return "redirect:/user-messages/" + user;
     }
 
     @GetMapping("/delete-message/{author}/{message}")

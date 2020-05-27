@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import ua.darksoul.testprojects.ownchat.domain.Message;
@@ -55,6 +56,30 @@ public class MessageService {
         } else {
             fileService.saveImg(message, file);
             saveMessage(message);
+
+            model.addAttribute("message", null);
+        }
+    }
+
+    public void updateMessage(Message messageFromDb, Message message, BindingResult bindingResult, Model model, MultipartFile file) throws IOException {
+        if(bindingResult.hasErrors()){
+            val mapErrors = ExceptionUtil.getErrors(bindingResult);
+
+            model.mergeAttributes(mapErrors);
+            model.addAttribute("message", message);
+        } else {
+            if(!StringUtils.isEmpty(message.getText())){
+                messageFromDb.setText(message.getText());
+            }
+
+            if(!StringUtils.isEmpty(message.getTag())){
+                messageFromDb.setTag(message.getTag());
+            }
+
+            fileService.deleteFile(messageFromDb.getFilename());
+            fileService.saveImg(messageFromDb, file);
+
+            saveMessage(messageFromDb);
 
             model.addAttribute("message", null);
         }

@@ -33,6 +33,8 @@ public class FileService {
 //                    message.setFile(file.getBytes());
                 }
             }
+        } else {
+            message.setFilename(null);
         }
     }
 

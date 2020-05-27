@@ -45,7 +45,7 @@
     <div class="mt-3">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Items</a>
+                <a class="page-link" href="#" tabindex="-1">Items on page</a>
             </li>
             <#list [2, 5, 10, 25, 50] as c>
                 <#if c == page.getSize()>
