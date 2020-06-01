@@ -1,6 +1,7 @@
-# <h1><strong>OwnChat - it is my first pet project for practice with Spring </strong></h1><br>
+<div style="background-color: grey !important; color: green">
+<h1><strong>OwnChat - it is my first pet project for practice with Spring </strong></h1><br>
 <h2>Functionally this is a twitter-like system.</h2>
-.  
+  
 <strong>Beta version is already was deployed on Heroku and you can try it 
 <a href="https://own-chat-ls.herokuapp.com/login" target="_blank" style="text-decoration:none;">
 	<em>https://own-chat-ls.herokuapp.com/login</em> 
@@ -46,4 +47,5 @@ Was used JPA(<b>Hibernate</b>) for working with DB (<b>PostgreSQL</b>).
 <div>
 	<h3>Error page</h3>
 	<img src="/screenshots/error page.png"/>
+</div>
 </div>
